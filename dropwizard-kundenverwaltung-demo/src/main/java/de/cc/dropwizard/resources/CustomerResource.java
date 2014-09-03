@@ -20,7 +20,6 @@ import de.cc.dropwizard.pojo.Customer;
 import de.cc.dropwizard.view.CustomerView;
 
 @Path("/customeradmin")
-@Produces(MediaType.APPLICATION_JSON)
 public class CustomerResource {
 	private final CustomerDAO customerDAO;
 
@@ -31,6 +30,7 @@ public class CustomerResource {
 	@Path("/customer")
 	@POST
 	@UnitOfWork
+	@Produces(MediaType.APPLICATION_JSON)
 	public Customer createCustomer(Customer customer) {
 		return customerDAO.create(customer);
 	}
@@ -38,6 +38,7 @@ public class CustomerResource {
 	@Path("/customer")
 	@GET
 	@UnitOfWork
+	@Produces(MediaType.APPLICATION_JSON)
 	public List<Customer> listCustomer() {
 		return customerDAO.findAll();
 	}
@@ -45,6 +46,7 @@ public class CustomerResource {
 	@Path("/customer/{customerId}")
 	@GET
 	@UnitOfWork
+	@Produces(MediaType.APPLICATION_JSON)
 	public Customer getPerson(@PathParam("customerId") LongParam customerId) {
 		return findSafely(customerId.get());
 	}
@@ -61,7 +63,7 @@ public class CustomerResource {
 	@Path("/customer/{customerId}/view_freemarker")
 	@UnitOfWork
 	@Produces(MediaType.TEXT_HTML)
-	public CustomerView getPersonViewFreemarker(
+	public CustomerView getCustomerViewFreemarker(
 			@PathParam("customerId") LongParam customernId) {
 		return new CustomerView(CustomerView.Template.FREEMARKER,
 				findSafely(customernId.get()));
@@ -71,7 +73,7 @@ public class CustomerResource {
 	@Path("/customer/{customerId}/view_mustache")
 	@UnitOfWork
 	@Produces(MediaType.TEXT_HTML)
-	public CustomerView getPersonViewMustache(
+	public CustomerView getCustomerViewMustache(
 			@PathParam("customerId") LongParam customerId) {
 		return new CustomerView(CustomerView.Template.MUSTACHE,
 				findSafely(customerId.get()));

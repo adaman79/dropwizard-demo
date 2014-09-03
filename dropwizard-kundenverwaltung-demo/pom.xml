@@ -19,6 +19,11 @@
 		</dependency>
 		<dependency>
 			<groupId>io.dropwizard</groupId>
+			<artifactId>dropwizard-assets</artifactId>
+			<version>${dropwizard.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.dropwizard</groupId>
 			<artifactId>dropwizard-hibernate</artifactId>
 			<version>${dropwizard.version}</version>
 		</dependency>
@@ -50,7 +55,6 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>

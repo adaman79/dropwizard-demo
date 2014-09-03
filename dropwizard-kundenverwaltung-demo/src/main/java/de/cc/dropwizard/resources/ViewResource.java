@@ -1,15 +1,26 @@
 package de.cc.dropwizard.resources;
 
+import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.views.View;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 import com.google.common.base.Charsets;
 
+import de.cc.dropwizard.kundenverwaltung.dao.CustomerDAO;
+import de.cc.dropwizard.view.ListCustomerView;
+
 @Path("/views")
 public class ViewResource {
+	
+	private final CustomerDAO customerDAO;
+	
+	public ViewResource(CustomerDAO customerDAO) {
+		this.customerDAO = customerDAO;
+	}
 	@GET
 	@Produces("text/html;charset=UTF-8")
 	@Path("/utf8.ftl")
@@ -40,6 +51,16 @@ public class ViewResource {
 	public View mustacheISO88591() {
 		return new View("/views/mustache/iso88591.mustache",
 				Charsets.ISO_8859_1) {
+		};
+	}
+	
+	@GET
+	@Produces(MediaType.TEXT_HTML)
+	@UnitOfWork
+	@Path("/customer")
+	public View getCustomerView() {
+		return new ListCustomerView("/views/mustache/listCustomer.mustache",
+				customerDAO.findAll()) {
 		};
 	}
 }

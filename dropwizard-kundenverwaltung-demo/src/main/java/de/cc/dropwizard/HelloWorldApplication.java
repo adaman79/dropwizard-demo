@@ -1,12 +1,14 @@
 package de.cc.dropwizard;
 
 import io.dropwizard.Application;
+import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
+import de.cc.dropwizard.health.DatabaseHealthCheck;
 import de.cc.dropwizard.health.TemplateHealthCheck;
 import de.cc.dropwizard.kundenverwaltung.dao.CustomerDAO;
 import de.cc.dropwizard.pojo.Customer;
@@ -33,6 +35,7 @@ public class HelloWorldApplication extends Application<HelloWorldConfiguration> 
 
 	@Override
 	public void initialize(Bootstrap<HelloWorldConfiguration> bootstrap) {
+		bootstrap.addBundle(new AssetsBundle("/assets/", "/"));
 		bootstrap.addBundle(new MigrationsBundle<HelloWorldConfiguration>() {
 			@Override
 			public DataSourceFactory getDataSourceFactory(
@@ -51,12 +54,14 @@ public class HelloWorldApplication extends Application<HelloWorldConfiguration> 
 		final CustomerDAO customerDAO = new CustomerDAO(
 				hibernateBundle.getSessionFactory());
 		final Template template = configuration.buildTemplate();
-
+		environment.jersey().setUrlPattern("/service/*");
 		environment.healthChecks().register("template",
 				new TemplateHealthCheck(template));
+		environment.healthChecks().register("database",
+				new DatabaseHealthCheck(configuration.getDataSourceFactory()));
 
 		environment.jersey().register(new HelloWorldResource(template));
-		environment.jersey().register(new ViewResource());
+		environment.jersey().register(new ViewResource(customerDAO));
 		environment.jersey().register(new CustomerResource(customerDAO));
 
 	}
