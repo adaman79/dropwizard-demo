@@ -26,9 +26,9 @@ ADD target/dropwizard-kundenverwaltung-demo-1.0-SNAPSHOT.jar /
 #ADD target/${project.artifactId}-${project.version}.jar
 ADD target/classes/hello-world.yml /
 
-CMD ["java", "-jar", "dropwizard-kundenverwaltung-demo-1.0-SNAPSHOT.jar", "db migrate", "hello-world.yml"]
+RUN ["java", "-jar", "dropwizard-kundenverwaltung-demo-1.0-SNAPSHOT.jar", "db", "migrate", "hello-world.yml"]
 #CMD ["java", "-jar", ${project.artifactId}-${project.version}.jar, "db migrate", "hello-world.yml"]
 CMD ["java", "-jar", "dropwizard-kundenverwaltung-demo-1.0-SNAPSHOT.jar", "server", "hello-world.yml"]
 #CMD ["java", "-jar", ${project.artifactId}-${project.version}.jar, "server", "hello-world.yml"]
 
-EXPOSE 8080
+EXPOSE 8080:8081

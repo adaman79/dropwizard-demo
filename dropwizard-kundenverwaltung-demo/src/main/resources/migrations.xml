@@ -33,4 +33,21 @@ http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 			</column>
 		</createTable>
 	</changeSet>
+	<changeSet id="2" author="felix">
+		<insert tableName="customer">
+		<column name="fullName" value="Felix Massem"/>
+		<column name="name" value="Felix"/>
+		<column name="jobTitle" value="Berater" />
+		</insert>
+		<insert tableName="customer">
+		<column name="fullName" value="Tobias Schaber"/>
+		<column name="name" value="Tobi"/>
+		<column name="jobTitle" value="Berater" />
+		</insert>
+		<insert tableName="customer">
+		<column name="fullName" value="Stefan Siprell"/>
+		<column name="name" value="Stefan"/>
+		<column name="jobTitle" value="Chefe" />
+		</insert>
+	</changeSet>
 </databaseChangeLog>
